@@ -6,11 +6,11 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://yoursite.com">
-  <title>Hexo</title>
+  <title>Archives: 2017/5 | Hexo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta property="og:type" content="website">
 <meta property="og:title" content="Hexo">
-<meta property="og:url" content="http://yoursite.com/index.html">
+<meta property="og:url" content="http://yoursite.com/archives/2017/05/index.html">
 <meta property="og:site_name" content="Hexo">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Hexo">
@@ -139,325 +139,47 @@
           <div id="js-content" class="content-ll">
             
   
-    <article id="post-third" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
+  
     
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/05/28/third/">this解释</a>
-    </h1>
-  
-
-        
-        <a href="/2017/05/28/third/" class="archive-article-date">
+    
+      
+      
+      <section class="archives-wrap">
+        <div class="archive-year-wrap">
+          <a href="/archives/2017" class="archive-year">2017</a>
+        </div>
+        <div class="archives">
+    
+    <article class="archive-article archive-type-post">
+  <div class="archive-article-inner">
+    <header class="archive-article-header">
+      	<div class="article-meta">
+	      	<a href="/2017/05/28/third/" class="archive-article-date">
   	<time datetime="2017-05-28T02:30:58.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-05-28</time>
 </a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h4 id="导语："><a href="#导语：" class="headerlink" title="导语："></a>导语：</h4><blockquote>
-<p>这两周在空闲之余鼓捣react，使用的是es6，其中有用到箭头函数，平时一向爱使用this的我发现这个箭头函数里的this和普通使用的this有所不同，故今天趁着放假，对this总结一下。</p>
-</blockquote>
-<h2 id="什么是this"><a href="#什么是this" class="headerlink" title="什么是this"></a>什么是this</h2><p>this是当前执行函数的上下文。<br>曾读《javascript语言精粹》中介绍了this，其中总结了了平时我们在代码中this在不同的场景中使用,表现出不同的期望，这对于我在平时的工作中受益匪浅。</p>
-<ul>
-<li>函数调用    (alert(“hello world”))</li>
-<li>方法调用    (console.log(“hello world”))</li>
-<li>构造函数调用    (new Object())</li>
-<li>隐式调用    (alert.apply(null,”hello world”))<h2 id="函数调用"><a href="#函数调用" class="headerlink" title="函数调用"></a>函数调用</h2><blockquote>
-<p>this: 全局对象(window/global)  </p>
-</blockquote>
-</li>
-</ul>
-<p>全局对象是由执行的环境决定的。在浏览器里它是window对象。在严格模式下，为undefined.<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">var a = &quot;hello world&quot;;</div><div class="line">function fnUnStrict()&#123;</div><div class="line">	console.log(this === window); //true</div><div class="line">&#125;</div><div class="line">function fnStrict()&#123;</div><div class="line">	&apos;use strict&apos;</div><div class="line">	console.log(this === undefined) //true</div><div class="line">&#125;</div><div class="line">var parms = &#123;</div><div class="line">	text: &apos;hello world&apos;,</div><div class="line">	greet: function()&#123;</div><div class="line">		function say()&#123;</div><div class="line">			console.log(this === window); //true</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<h2 id="方法调用"><a href="#方法调用" class="headerlink" title="方法调用"></a>方法调用</h2><blockquote>
-<p>拥有这个方法的对象。   </p>
-</blockquote>
-<p>一个方法是一个函数，作为属性存在于对象中。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">var parms = &#123;</div><div class="line">	name: &apos;xiaoming&apos;,</div><div class="line">	age: &apos;3&apos;,</div><div class="line">	go: function()&#123;</div><div class="line">		console.log(this === parms); //true</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<h2 id="构造函数调用"><a href="#构造函数调用" class="headerlink" title="构造函数调用"></a>构造函数调用</h2><blockquote>
-<p>新构造出来的新对象   </p>
-</blockquote>
-<p>new后跟着一个构造函数，产生新的对象<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">var DrawMap = function(container)&#123;</div><div class="line">	this.map =  new google.maps.Map(document.getElementById(container), &#123;</div><div class="line">        center: &#123;lat: 39.916527, lng: 116.397128&#125;,</div><div class="line">        zoom: 8</div><div class="line">    &#125;);</div><div class="line">    console.log(this);  </div><div class="line">&#125; </div><div class="line">var myMap = new DrawMap(&quot;map&quot;);  //打印出来的this指的是myMap</div></pre></td></tr></table></figure></p>
-<h2 id="隐式调用"><a href="#隐式调用" class="headerlink" title="隐式调用"></a>隐式调用</h2><blockquote>
-<p>在隐式调用.call()或.apply()中，this是第一个参数。  </p>
-</blockquote>
-<p>当函数被.call()或者.apply()调用时，执行的是隐式调用方法.call(thisArg[, arg1[, arg2[, …]]])将接受的第一个参数thisArg作为调用时的上下文，arg1, arg2, …这些则作为参数传入被调用的函数。方法.apply(thisArg, [args])将接受的第一个参数thisArg作为调用时的上下文，并且接受另一个类似数组的对象[args]作为被调用函数的参数传入。  </p>
-<pre><code>var Student = function(name){
-    this.name = name;
-    console.log(this.name)  //&apos;hehe&apos;
-    console.log(this);  //school
-}
-var School = function(name){
-    Student.call(this,name);
-}
-
-var school = new School(&apos;hehe&apos;);
-</code></pre><h2 id="绑定函数"><a href="#绑定函数" class="headerlink" title="绑定函数"></a>绑定函数</h2><blockquote>
-<p>this是.bind()的第一个参数  </p>
-</blockquote>
-<p>绑定函数是一个与对象绑定的函数。通常它是通过在原函数上使用 .bind()来创建的。原函数和绑定的函数共享代码跟作用域，但是在执行时有不同的上下文。方法.bind(thisArg[, arg1[, arg2[, …]]])接受第一个参数thisArg作为绑定函数执行时的上下文，并且它接受一组可选的参数 arg1, arg2, …作为被调用函数的参数。它返回一个绑定了thisArg的新函数。  </p>
-<pre><code>var sum = function(num){
-     console.log(this*num);   //6
-}
-var three = sum.bind(3);
-three(2);
-</code></pre><h2 id="箭头函数"><a href="#箭头函数" class="headerlink" title="箭头函数"></a>箭头函数</h2><blockquote>
-<p>this是箭头函数定义时封装好的上下文  </p>
-</blockquote>
-<pre><code>function Fn(name,age){
-    this.name = name;
-    this.age = age;
-}
-Fn.prototype.study = function(){
-    console.log(this); //student;
-}
-Fn.protorype.like = ()=&gt;{
-    console.log(this); //window;
-}
-var student = new Fn(&quot;xiaoming&quot;,&quot;6&quot;);
-student.study();
-student.like();
-</code></pre><p>箭头函数中的this总是绑定的是此法作用域，即使修改上下文(apply,call,bind),this也不会被改变。</p>
-<pre><code>var nums = [2,5,7];
-(function(){
-    var fn = ()=&gt;{
-        console.log(this) //[2,5,7]
-    }
-    fn.call([5]); //[2,5,7]
-    fn.apply([23]); //[2,5,7]
-    var fu = fn.bind([0]);
-    fu()
-}).call(nums);
-</code></pre><h3 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h3><blockquote>
-<p>在我们使用this时，注意两点：<br>如果在普通的我们使用的情况下，需要看函数是如何被调用的，这样确定this,上面所阐述的几个例子可以作为参考。<br>在es6中，确定this，需要看这个函数被定义是的环境 。</p>
-</blockquote>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2017/05/28/third/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-
-
-
-
-
-
-
-  
-    <article id="post-second" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
+        </div>
+    	 
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2017/04/18/second/">简单的原生拖拽</a>
+      <a class="archive-article-title" href="/2017/05/28/third/">this解释</a>
     </h1>
   
 
-        
-        <a href="/2017/04/18/second/" class="archive-article-date">
-  	<time datetime="2017-04-18T13:09:57.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-04-18</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>忙碌的一个周过去了，拖到今天才把这篇拖拽的文章写出来。</p>
-<p>说道前端的拖拽，我们想到了jqueryUi拖拽功能，用起来还不错，最近我们有一个功能中需要用到拖拽这个功能，而我又不想用jquery-ui来实现，因为这样，我们就要引入几个jquery-ui的文件。所以，原生手动走起。。。</p>
-<p>中间的小黄块在框中拖动。</p>
-<h3 id="效果"><a href="#效果" class="headerlink" title="效果"></a>效果</h3><p><img src="/2017/04/18/second/1.png" alt="img"></p>
-<h2 id="函数startDrag-入口函数，直接调用"><a href="#函数startDrag-入口函数，直接调用" class="headerlink" title="函数startDrag(入口函数，直接调用)"></a>函数startDrag(入口函数，直接调用)</h2><p>startDrag(container,box):函数；<br>    container: DOM元素，表示要拖动的区域；<br>    box: DOM元素，表示要拖动的盒子。<br>Ps:box相当于container是绝对定位的。</p>
-<p><img src="/2017/04/18/second/2.png" alt="img"></p>
-<p>在startDrag的parms中定义了5个属性（container,dragBox,move,disX,disY），2个方法(init,getPosition)。</p>
-<h3 id="属性："><a href="#属性：" class="headerlink" title="属性："></a>属性：</h3><p>1)    container: 存储形参“container”，也就是存储的是一个HTML DOM元素，表示的是盒子在这个区域拖动。<br>2)    dragBox: 存储形参“dragBox”，也就是存储的事宜个HTML DOM的元素，表示的是被拖动的盒子。<br>3)    move: [Boolean]值，true表示盒子可以随着鼠标拖动，false表示盒子不可以随着鼠标拖动。<br>4)    disX: [number],鼠标按下的瞬间，鼠标和这盒子左边框的距离。<br>5)    disY: [number],鼠标按下的瞬间，鼠标和这盒子上边框的距离。<br>方法：<br>1)    init: 在调用startDrag时，实际运行的是这个函数<br>2)    getPosition:参数node为一个HTML DOM元素，获取一个DOM元素距离窗口左边和右边的距离，返回的一个对像。</p>
-<p>init:</p>
-<p><img src="/2017/04/18/second/3.png" alt="img"></p>
-<p>getPosition:获取节点相当于浏览器窗口的位置。</p>
-<p><img src="/2017/04/18/second/4.png" alt="img"><br>1)offsetLeft:只读，返回当前元素左上角相当于HTML offsetParent节点的左边界偏移的像素值。<br>2)offsetParent: 返回一个指向最近的（指包含级上的最近）包含该元素的定位函数，如果没有定位的元素，则offsetParent为最近的table元素对象或者是根元素（标准为html,怪异模式为body）.</p>
+        <div class="article-info info-on-right">
+          
+          
 
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2017/04/18/second/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
+        </div>
+        <div class="clearfix"></div>
+    </header>
   </div>
 </article>
-
-
-
-
-
-
-
-
   
-    <article id="post-first" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
+  
+    </div></section>
+  
+
     
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/04/01/first/">jsGrid样式自定义</a>
-    </h1>
-  
-
-        
-        <a href="/2017/04/01/first/" class="archive-article-date">
-  	<time datetime="2017-04-01T07:01:18.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-04-01</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>开始用自己搭建的博客写文章，开森。。。</p>
-<p>之所以写这篇博客，并不是我所介绍的内容很新颖独特，而是当我在网上搜寻解决这些问题的办法时，很少搜到给我明确方向的答案，所以，在搜寻答案失败之后，我还是打算自己来解决，一方面，如果有人遇到和我一样的问题而没有搜到答案，还有一方面，给我自己做一个笔记。不喜勿喷哦。。。</p>
-<p>在我的项目中，采用了jqGrid这个表格插件，官方demos中的样式表采用的是jquery-ui的样式表来美化这个表格,由于用久了bootstrap，比较喜欢它简洁大方的气质，所以我选择用bootstrap来美化，但是效果不尽人意（样式冲突），所以，需要在调试中找出这些样式，然后，重新定义这些样式来达到我们的效果。</p>
-<h3 id="效果"><a href="#效果" class="headerlink" title="效果"></a>效果</h3><p><img src="/2017/04/01/first/jqgrid1.jpg" alt="img"></p>
-<h3 id="引入的文件："><a href="#引入的文件：" class="headerlink" title="引入的文件："></a>引入的文件：</h3><p><img src="/2017/04/01/first/jqgrid3.png" alt="img"></p>
-<p><img src="/2017/04/01/first/jqgrid4.png" alt="img"></p>
-<h3 id="样式表"><a href="#样式表" class="headerlink" title="样式表"></a>样式表</h3><p>这个例子中和原来的风格完全不一样。这张图片的每一个不同颜色的框都是一个表格。当然外面被div套着。在我们没有写自定义的样式表时，我们打开谷歌的调试，看样式，根据他的样式class来写自己自定义的样式表。<br><img src="/2017/04/01/first/jqgrid6.png" alt="img"><br>比如：他的样式为.ui_state_hover{ color:#f8f8f8; },我们可以改成.ui_state_hover{color:#999;}这个样式表一定要放在ui.grid.css，bootstrap.css的后面来进行覆盖，如果覆盖不了，我们就进行权重比较。</p>
-<h3 id="图标"><a href="#图标" class="headerlink" title="图标"></a>图标</h3><p>说完了样式表，接下来说说图标。Jqgrid本身是不带图标的，一般是用别的例如jquery-ui来进行图标的替换。Bootstrap中也有图标。这里图标就成了一个问题了。就算是我们看到网页加载完后有图标的class，但是都没有图形，我们需要在表格动态加载完成之后，将图标的class换成bootstrap的图形icon，所以在gridComplete事件中来干这件事情。<br>当然这里的图标的id也是不同的版本jqgrid有可能有所不同，所以还得再谷歌的调试工具中来看。</p>
-<p><img src="/2017/04/01/first/jqgrid5.png" alt="img"></p>
-<p>###PS<br>关于版本（主要是jqGrid.js，ui.grid.css）：<br>    如果jqGrid.js和ui.grid.css的版本有所变化，那么那个tablestyle.css文件和index.js文件就得重新写，需要重新写的地方就是最后两张图所展示的部分。所以一般确定好这两个文件的版本，不可轻易变换。</p>
-<h3 id="后记"><a href="#后记" class="headerlink" title="后记"></a>后记</h3><p>我的代码可能不是适合你，主要在于思路和方法，自己动手，丰衣足食。</p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">jsGrid bootstrap table</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2017/04/01/first/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-
-
-
-
-
-
-
-  
-    <article id="post-hello-world" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/04/01/hello-world/">Hello World</a>
-    </h1>
-  
-
-        
-        <a href="/2017/04/01/hello-world/" class="archive-article-date">
-  	<time datetime="2017-04-01T05:55:13.879Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-04-01</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>Welcome to <a href="https://hexo.io/" target="_blank" rel="external">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="external">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="external">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="external">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo new <span class="string">"My New Post"</span></div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="external">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo server</div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="external">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo generate</div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="external">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo deploy</div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="external">Deployment</a></p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2017/04/01/hello-world/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-
-
-
-
-
-
-
-  
-  
 
 
           </div>
@@ -479,9 +201,9 @@ student.like();
     <script>
 	var yiliaConfig = {
 		mathjax: false,
-		isHome: true,
+		isHome: false,
 		isPost: false,
-		isArchive: false,
+		isArchive: true,
 		isTag: false,
 		isCategory: false,
 		open_in_new: false,
