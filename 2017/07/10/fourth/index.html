@@ -6,30 +6,23 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://yoursite.com">
-  <title>react笔记001 | Hexo</title>
+  <title>防抖和节流 | Hexo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="导语
-在前两个月因为一个偶然的原因，接触到了react,虽然用react+redux速成一个小作品，但是总是心里不得劲，没有好好地去学习和研究react。所以趁着这两天项目不是很忙，就开始着手重新学习react。react001是来记录如何搭建react环境。
-
-初识react
-react是一个构建用户界面的javascript库，React 使用 JSX 来替代常规的 JavaScript。">
+最近在项目中，websocket每过50毫秒就会给给我推一个数据，我需要做的是将数据映射在一个实时变化的折线图（highChart），而我们对这个折线图的需求不过是想看到大致的速度和高度的变化趋势，所以说不必要每个数据都放在我们highChart的折线图上，只要 每间隔30秒添加数据到折线图，我首先想到了的是使用setTimeout，后来在一个后台同事的提醒下做节流/防抖，于是百度，谷歌，然">
 <meta property="og:type" content="article">
-<meta property="og:title" content="react笔记001">
-<meta property="og:url" content="http://yoursite.com/2017/05/28/react001/index.html">
+<meta property="og:title" content="防抖和节流">
+<meta property="og:url" content="http://yoursite.com/2017/07/10/fourth/index.html">
 <meta property="og:site_name" content="Hexo">
 <meta property="og:description" content="导语
-在前两个月因为一个偶然的原因，接触到了react,虽然用react+redux速成一个小作品，但是总是心里不得劲，没有好好地去学习和研究react。所以趁着这两天项目不是很忙，就开始着手重新学习react。react001是来记录如何搭建react环境。
-
-初识react
-react是一个构建用户界面的javascript库，React 使用 JSX 来替代常规的 JavaScript。">
-<meta property="og:updated_time" content="2017-06-05T09:44:31.120Z">
+最近在项目中，websocket每过50毫秒就会给给我推一个数据，我需要做的是将数据映射在一个实时变化的折线图（highChart），而我们对这个折线图的需求不过是想看到大致的速度和高度的变化趋势，所以说不必要每个数据都放在我们highChart的折线图上，只要 每间隔30秒添加数据到折线图，我首先想到了的是使用setTimeout，后来在一个后台同事的提醒下做节流/防抖，于是百度，谷歌，然">
+<meta property="og:image" content="http://yoursite.com/2017/07/10/fourth/pic1.png">
+<meta property="og:updated_time" content="2017-07-10T02:26:06.457Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="react笔记001">
+<meta name="twitter:title" content="防抖和节流">
 <meta name="twitter:description" content="导语
-在前两个月因为一个偶然的原因，接触到了react,虽然用react+redux速成一个小作品，但是总是心里不得劲，没有好好地去学习和研究react。所以趁着这两天项目不是很忙，就开始着手重新学习react。react001是来记录如何搭建react环境。
-
-初识react
-react是一个构建用户界面的javascript库，React 使用 JSX 来替代常规的 JavaScript。">
+最近在项目中，websocket每过50毫秒就会给给我推一个数据，我需要做的是将数据映射在一个实时变化的折线图（highChart），而我们对这个折线图的需求不过是想看到大致的速度和高度的变化趋势，所以说不必要每个数据都放在我们highChart的折线图上，只要 每间隔30秒添加数据到折线图，我首先想到了的是使用setTimeout，后来在一个后台同事的提醒下做节流/防抖，于是百度，谷歌，然">
+<meta name="twitter:image" content="http://yoursite.com/2017/07/10/fourth/pic1.png">
   
     <link rel="alternative" href="/atom.xml" title="Hexo" type="application/atom+xml">
   
@@ -153,84 +146,209 @@ react是一个构建用户界面的javascript库，React 使用 JSX 来替代常
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-react001" class="article article-type-post " itemscope itemprop="blogPost">
+            <article id="post-fourth" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 class="article-title" itemprop="name">
-      react笔记001
+      防抖和节流
     </h1>
   
 
         
-        <a href="/2017/05/28/react001/" class="archive-article-date">
-  	<time datetime="2017-05-28T12:13:18.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-05-28</time>
+        <a href="/2017/07/10/fourth/" class="archive-article-date">
+  	<time datetime="2017-07-10T00:57:47.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-07-10</time>
 </a>
         
       </header>
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h2 id="导语"><a href="#导语" class="headerlink" title="导语"></a>导语</h2><blockquote>
-<p>在前两个月因为一个偶然的原因，接触到了react,虽然用react+redux速成一个小作品，但是总是心里不得劲，没有好好地去学习和研究react。所以趁着这两天项目不是很忙，就开始着手重新学习react。react001是来记录如何搭建react环境。</p>
+        <h3 id="导语"><a href="#导语" class="headerlink" title="导语"></a>导语</h3><blockquote>
+<p>最近在项目中，websocket每过50毫秒就会给给我推一个数据，我需要做的是将数据映射在一个实时变化的折线图（highChart），而我们对这个折线图的需求不过是想看到大致的速度和高度的变化趋势，所以说不必要每个数据都放在我们highChart的折线图上，只要 每间隔30秒添加数据到折线图，我首先想到了的是使用setTimeout，后来在一个后台同事的提醒下做节流/防抖，于是百度，谷歌，然后研究了一番，最后做出了效果，以下是我的总结。  </p>
 </blockquote>
-<h2 id="初识react"><a href="#初识react" class="headerlink" title="初识react"></a>初识react</h2><blockquote>
-<p>react是一个构建用户界面的javascript库，React 使用 JSX 来替代常规的 JavaScript。  </p>
-</blockquote>
-<p>JSX是js语言的一种拓展，长得像HTML,但不是HTML,在w3c上我们可以看到对jsx的介绍[<a href="http://www.runoob.com/react/react-jsx.html]。" target="_blank" rel="external">http://www.runoob.com/react/react-jsx.html]。</a><br>初次写react的demo时，我内心是惊呆了的，在之前我实习时，使用了angular.js的这种MVC框架，给我的感觉是他添加了一些后台的概念，整个项目是模块化，编写代码我们平时的习惯还能比较相近；然而，react却是换一个新的概念V存在，项目是组件化的，一切皆组件，语法、编写习惯和平时接触的有些截然不同的感觉，这也就更加增长了我的好奇心。<br>React是将一个项目拆分成大大小小的组件，大组件套小组件，每一个组件可以有自己的文件，可以根据我们的输入而输出相应内容，有一种函数式编程的感觉。。。好了，不说了，太磨叽了，到下一个话题吧。  </p>
-<h2 id="环境搭建"><a href="#环境搭建" class="headerlink" title="环境搭建"></a>环境搭建</h2><h3 id="create-react-app"><a href="#create-react-app" class="headerlink" title="create-react-app"></a>create-react-app</h3><p>由于React需要用到JSX语法，甚至有人会使用ES6语法（比如我），每一组件嵌套时，需要引入单个文件里的组件等等等。。。需要有一个环境可以转换JSX，翻译ES6,这样浏览器来能听得懂我们在讲什么。<br>我推荐使用官方出品的create-react-app,简单，快捷。  </p>
+<h2 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h2><p><strong>节流：</strong>    强调是在一定时间内，调用函数的最大次数，比如在100毫秒内最多调用函数一次保证的是x毫秒恒定的执行次数。<br><strong>防抖：</strong>    强调的是事件频繁触发一定时间后才执行，或者第一次触发事件的时候就执行，直到停止触发后等待一段时间才执行。 保证的是把触发非常频繁的时间合并成一次执行。<br><img src="/2017/07/10/fourth/pic1.png" alt="img"><br>(图片引自User Interfaces | Meteor Guide)（<a href="https://guide.meteor.com/ui-ux.html）" target="_blank" rel="external">https://guide.meteor.com/ui-ux.html）</a></p>
+<p>在我的项目中数据是不断的进行推送的，直到这个发送数据的那个某某机器掉线，所以最终采用的是节流。在网上有很多关于节流和防抖的一些代码，大部分人用的是loadsh或者underscore的中的debounce、throttle源码，根据源码我们来看下节流和防抖的区别，并且将这个代码运用在我的项目中。</p>
+<h2 id="防抖"><a href="#防抖" class="headerlink" title="防抖"></a>防抖</h2><p>先来一个我在网上看到并且进行改造的简化版的防抖。</p>
+<pre><code>&lt;div id=&quot;container&quot; style=&quot;width:120px;height:120px;border: 1px solid #ccc;&quot;&gt;&lt;/div&gt;
+
+&lt;script&gt;
+window.onload = function(){
+    /*
+    *@parm func ： {function} ，需要触发执行的回调函数
+    *@parm delay: {num} ,时间间隔，单位为毫秒
+    */
+    function debouce(func,delay){
+        //定时器
+        var timer = null;
+        return function(){
+            var context = this;   //执行上下文环境，因为在setTimeout中的回调函数中this = window
+            var args = arguments;   //参数
+            clearTimeout(timer);   //清除上次定义的定时器
+            timer = setTimeout(function(){   //重现赋值定时器
+                func.apply(context,args);   //执行需要出发的函数
+            },delay)
+        }
+    }
+    function consoleSomething(){
+        console.log(&quot;防抖防抖&quot;)
+    }
+    document.getElementById(&quot;container&quot;).onmousemove = debouce(consoleSomething,3000);
+}
+&lt;/script&gt;
+</code></pre><p>节流函数debouce产生了一个闭包（最后return），我们知道闭包可以使得函数有权访问另一个函数作用域内变量，这个定义的timer可以被返回的函数func不断访问，而且不存在于全局中，防止全局污染。每次我们把鼠标放在container区域不出来就会触发onmousemove的回调函数func，func把之前的定时器清除掉，然后重新对定时器进行赋值，这样下去，除非我们把鼠标移出，最后一个定时器不会被清除，在delay后执行consoleSomething这个回调函数。<br>从这个简化版的例子中，我们应该对防抖的概念有比较清晰的印象了。    </p>
+<pre><code>&lt;button id=&quot;button&quot;&gt;click me&lt;/button&gt;
+
+&lt;script type=&quot;text/javascript&quot;&gt;
+    //获取时间戳
+    var _now = Date.now || function(){
+        return new Date().getTime();
+    }
+    /*
+    *@params func:{function},触发执行的回调函数
+    *@params wait:{num} ,时间间隔，单位为毫秒
+    *@params immediate:{boolea},true表示在停止触发后的一段时间间隔后执行回调，false:表示第一次触发就执行
+    */
+    var debouce = function(func,wait,immediate){
+        //定时器，传入的参数，执行上下文环境，触发回调函数的时间戳
+        var timeout,args,context,timestamp,result;
+        var later = function(){
+            var last = _now() -  timestamp;   //打算执行回调函数是间戳-触发回调函数的时间戳
+            if(last&lt;wait &amp;&amp; last&gt;0){  //时间差小于时间间隔，并且时间差大于0
+                timeout = setTimeout(later,wait-last); //timeout重新复制，并不执行回调函数
+            }else{
+                timeout = null; 
+                if(!immediate){   //如果不是立即执行
+                    result = func.apply(context,args); //执行回调函数
+                    if(!timeout){   
+                        context = args = null;
+                    }
+                }
+            }
+        }
+        return function(){
+            context = this;  //上下文执行环境
+            args = arguments;  //传入的参数
+            timestamp = _now();   //触发回调的时间戳
+            //传入的参数immediate为true,并且定时器为空,callNow为true,立即执行
+            var callNow = immediate &amp;&amp; !timeout;   
+
+            //timeout没有赋值定时器，赋值定时器
+            if(!timeout){  
+                timeout = setTimeout(later,wait);
+            }
+            //如果立即执行
+            if(callNow){ 
+                result = func.apply(context,args);  //触发后立即执行回调函数
+                context = args = null;
+            }
+        }
+    }
+    var consoleSomething = function(){
+        console.log(&quot;防抖防抖防抖&quot;);
+    }
+    window.onload = function(){
+        document.getElementById(&quot;button&quot;).onclick = debouce(consoleSomething,1000,true);
+    }
+
+&lt;/script&gt;
+</code></pre><p>同样也是使用的闭包机制，而不同的是还可以选择是否事件频繁触发一定时间后才执行，或者第一次触发事件的时候就执行，直到停止触发后等待一段时间才执行。<br>其中，这个核心点在于：</p>
 <ul>
-<li><p>全局安装create-react-app  </p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">npm install -g create-react-app</div></pre></td></tr></table></figure>
-</li>
-<li><p>创建一个react项目  </p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">create-react-app &quot;react001&quot;</div></pre></td></tr></table></figure>
-</li>
-<li><p>进入项目，开启项目</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">cd react001</div><div class="line">npm start</div></pre></td></tr></table></figure>
-</li>
+<li>定时器（timeout)是否为空，如果为空，就重新赋值定时器，如果不为空，则不再赋值定时器，这样避免频繁触发频繁添加不必要的定时器（timeout）。</li>
+<li>触发时刻的时间戳(timestamp)在不断改变，规定的时间间隔(wait)固定的，只要到了定时器该执行(_now)的时候，如果说该执行时刻的时间戳(_now)和最近触发时刻的时间戳(timestamp)的间隔小于规定的额时间间隔(wait)或者小于0，那么说明在规定的时间间隔(wait)内还在不停的触发，所以，更新定时器(timeout)，时间间隔为这这两者的差值(timestamp-_now)</li>
+<li>在立即执行回调函数这一块，如果定时器为空，并且是立即执行的指令，则立即执行回调函数，但是，还是要给timeout赋值定时器，但是这并不意味着这个定时器就会执行这个函数，因为他会判断是否是立即执行状态，如果是就不会执行这个函数。而且这个定时器存在的意义如第一条所说。</li>
 </ul>
-<p>在localhost:3000中可以看到我们的界面，create-react-app使用了热加载，所以当我们的项目文件发生改变时，可以实时刷新我们的界面，如果有错误，也会在界面中显示，是不是很方便呢。  </p>
-<h3 id="webpack手动搭建"><a href="#webpack手动搭建" class="headerlink" title="webpack手动搭建"></a>webpack手动搭建</h3><ul>
-<li><p>全局安装webpack  </p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">npm install -g webpack</div></pre></td></tr></table></figure>
-</li>
-<li><p>创建项目  </p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">mkdir demo  //创建文件夹demo</div><div class="line">cd demo  	//进入demo文件夹</div><div class="line">npm init 	//步骤填写最终生成package.json文件，也可以直接entry，这个文件描述了项目的基本信息和项目依赖的第三方插件的信息</div></pre></td></tr></table></figure>
-</li>
-<li><p>安装插件</p>
-<blockquote>
-<p>npm install 时有–save-dev和–save，两者将安装的插件分别记录在package.json的dependencies和devDependencies中。<br>–save-dev: 项目开发中依赖的插件，比如webpack（用来打包项目），babel（ES6代码转为ES5代码）,在项目打包上线之后，这些插件就用不上了.<br>–save: 项目在运行时依赖的插件，比如react,jquery,react-dom.  </p>
-</blockquote>
-</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">npm install webpack webpack-dev-server --save-dev</div></pre></td></tr></table></figure>
-<p>webpack-dev-server是一个小型的Node.js Express服务器。参考<a href="https://segmentfault.com/a/1190000006964335" target="_blank" rel="external">详解webpack-dev-server的使用</a></p>
+<h2 id="节流"><a href="#节流" class="headerlink" title="节流"></a>节流</h2><p>先来一个我在网上看到并且进行改造的简化版的节流。 </p>
+<pre><code>&lt;div id=&quot;throttle&quot; style=&quot;width: 290px;height:300px;border: 1px solid #ccc;&quot;&gt;&lt;/div&gt;
+&lt;script type=&quot;text/javascript&quot;&gt;
+    /*
+    *@param: func:{function},触发执行的回调函数
+    *@param: delay:{num},执行的时间间隔
+    */
+    var throttle = function (func,delay) {
+        var isRun = true;   //控制是否添加回调函数，
+        return function(){
+            if(!isRun) return false;   //isRun为false,表示不能添加新的回调函数
+            isRun = false;  
+            var args = arguments;
+            var context = this
+            setTimeout(function(){
+                func.apply(context,args);
+                isRun = true;  //在这个回调函数执行后，isRun为true，才能添加新的回调函数
+            },delay)
+        }
+    }
+    var consoleSomething = function(){
+        console.log(&quot;节流节流节流&quot;);
+    }
+    document.getElementById(&quot;throttle&quot;).onclick = throttle(consoleSomething,3000)
+&lt;/script&gt;
+</code></pre><p>这个例子也是采用的闭包机制，核心点在于是否可以添加回调函数，如果说上一个回调函数在时间间隔delay内还没有执行，那么就不能添加回调函数，始终都只有一个回调函数。当时间间隔后执行了回调函数,将isRun设为true,才能添加下一个回调函数，所以在时间间隔内不断触发的是不会产生新的回调函数，除非已经产生的回调函数已经执行了。<br>从这个简化版的例子中，我们应该对节流的概念有比较清晰的印象了。   </p>
+<pre><code>&lt;button id=&quot;button&quot;&gt;click me&lt;/button&gt;
+&lt;script type=&quot;text/javascript&quot;&gt;
+    var _now = Date.now || function(){
+        return new Date().getTime();
+    }
+    /*
+    *@param func : {function} 触发执行的回调函数
+    *@param wait : {num} 时间间隔
+    *@param option : {} 如果想忽略开始边界上的调用，传入{leading:false}
+    *                    如果想忽略结尾边界上的调用，传入{trailing:false}
+    */
+    var _throttle = function(func, wait, options) {
+        //执行上下文环境，闭包传入的参数
+          var context, args, result;
+          var timeout = null;
+         var previous = 0;   //上次执行回调函数的时间点
+          if (!options) options = {};
+          //延迟执行函数
+          var later = function() {
+              // 若设定了开始边界不执行选项，上次执行时间始终为0
+            previous = options.leading === false ? 0 : _now();
+            timeout = null;
+            result = func.apply(context, args);
+               if (!timeout) context = args = null;
+          };
+          //leading:false,这第一次调用不执行function
+          //trailing:false,禁止最后那一次延迟的调用
+          return function() {
+            var now = _now();   //触发动作的时间戳
+            //首次执行时，如果设定了开始便不执行回调函数，将上次的执行回调函数的时间戳设置为此次触发的时间戳
+            if (!previous &amp;&amp; options.leading === false) previous = now;
+            //执行回调函数的剩余时间间隔，总的时间间隔-（这次触发的时间戳-上次执行的时间间隔）
+            var remaining = wait - (now - previous);
+            context = this;
+            args = arguments;
+            //执行回调函数剩余的时间间隔小于0，表示上次执行到现在已经超过了规定的时间间隔；
+            //执行回调函数剩余的时间间隔大于规定的时间间隔表示客户端系统时间呗重新调整过
+            if (remaining &lt;= 0 || remaining &gt; wait) {
+                  if (timeout) {
+                    clearTimeout(timeout);
+                    timeout = null;
+                  }
+                  previous = now;
+                  result = func.apply(context, args);
+                  if (!timeout) context = args = null;
+                   //如果延迟执行不存在，且没有设定结尾边界不执行选项
+            } else if (!timeout &amp;&amp; options.trailing !== false) {
+              timeout = setTimeout(later, remaining);
+            }
+               return result;
+          };
+    };
+    var consoleSomething = function(){console.log(&quot;节流节流&quot;)}
+    window.onload = function(){
+        document.getElementById(&quot;button&quot;).onclick = _throttle(consoleSomething,3000,{})
+    }
+&lt;/script&gt;
+</code></pre><p>其中，这个核心点在于： </p>
 <ul>
-<li>添加并且配置webpack.confing.js<br>项目目录：<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">------app</div><div class="line">	+index.html</div><div class="line">	+index.js</div><div class="line">------package.json</div><div class="line">------webpack.config.js</div></pre></td></tr></table></figure>
-</li>
+<li>以第一次触发事件执行回调函数的时间戳为几点，然后每隔wait时间执行一次回调函数，不管用户触发了多少次时间，用户停止点击后，每隔一次触发一次后清掉定时器 </li>
+<li>剩余的时间间隔remaining为规定的时间间隔(wait)减去现在触发的时间戳（now)和上次执行回调函数的时间戳（previous)的差值，剩余的时间间隔（remaining)表明是否到了该执行此次触发的时候，如果到了，则清除之前的定时器，执行现在这个回调函数否则，如果定时器不存在则重新赋值定时器。</li>
+<li>定时器（timeout）给埋下了一个时间段，表明这个时间段中，用户的触发时没有用的。</li>
 </ul>
-<p>webpack.config.js配置<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">var path = require(&apos;path&apos;);</div><div class="line">var webpack = require(&apos;webpack&apos;);</div><div class="line"></div><div class="line">module.exports = &#123;</div><div class="line">	entry: path.resolve(__dirname,&apos;app/index.js&apos;),</div><div class="line">	output: &#123;</div><div class="line">		path: __dirname+&quot;/build&quot;,</div><div class="line">		filename: &apos;./js/bundle.js&apos;</div><div class="line">	&#125;,</div><div class="line">	resolve: &#123;</div><div class="line">		extensions: [&apos;.js&apos;,&apos;.jsx&apos;]</div><div class="line">	&#125;,</div><div class="line">	devServer: &#123;</div><div class="line">		historyApiFallback: true, //不跳转，在单页面开发时非常有用，依赖于HTML5 history API</div><div class="line">		inline: true, //实时刷新</div><div class="line">		hot: true  //使用热加载插件HotModuleReplacementPlugin</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<ul>
-<li>自动打开和热加载<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">npm install open-browser-webpack-plugin --save-dev</div></pre></td></tr></table></figure>
-</li>
-</ul>
-<p>在module.exports对象中添加属性plugin数组：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">var OpenBrowserPlugin = require(&quot;OpenBrowserPlugin&quot;);</div><div class="line">plugins: [</div><div class="line">	//热加载插件</div><div class="line">	new webpack.HotModuleReplacementPlugin(),</div><div class="line">	//打开浏览器</div><div class="line">	new OpenBrowserPlugin(&#123;</div><div class="line">		url: &apos;http://localhost:8080&apos;</div><div class="line">	&#125;)</div><div class="line">],</div></pre></td></tr></table></figure></p>
-<p>HotModuleReplacementPlugin:是用来做热替换的，每次开发环境下的资源发生变更之后都会自动重新打包输出，不需要重新构建.<br>OpenBrowserPlugin:构建完成之后自动打开浏览器的”localhost:8080”这个路径</p>
-<ul>
-<li><p>html模板插件<br>如果我们创建了index.html，还需要手动把生成的bundle.js添加到script标签中，如果说还有别的输出，比如后面可能为了性能问题而使用vendor提取打包公共模块也需要手动添加，所以可以使用html模板插件，可自动将output中的文件引入到html页面</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">npm install HtmlWebpackPlugin --save-dev</div><div class="line"></div><div class="line">webpack.config.js</div><div class="line">var OpenBrowserPlugin = require(&quot;htmlWebpackPlugin&quot;);</div><div class="line">plugins: [</div><div class="line">	//html魔板插件</div><div class="line">	new htmlWebpackPlugin(&#123;</div><div class="line">		template: __dirname+&apos;/app/index.html&apos;</div><div class="line">	&#125;)</div><div class="line">]</div></pre></td></tr></table></figure>
-</li>
-<li><p>修改package.json文件的scripts</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">&quot;scripts&quot;: &#123;</div><div class="line">//命令行输入npm start，相当于输入npm webpack-dev-server --progress --colors,打开webpack-dev-server服务器</div><div class="line">    &quot;start&quot;: &quot;webpack-dev-server --progress --colors&quot;</div><div class="line">&#125;,</div></pre></td></tr></table></figure>
-</li>
-</ul>
-<p>命令行输入npm start,浏览器自动打开localhost:8080,修改index.js保存后，webpack自动编译打包，页面自动刷新。</p>
-<blockquote>
-<p>目前，运行环境已经搭建好了，只是还差babel，react,react-dom等等的插件。这个留着下一节再讲。</p>
-</blockquote>
 
       
 
@@ -289,7 +407,7 @@ react是一个构建用户界面的javascript库，React 使用 JSX 来替代常
     <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="http://s.jiathis.com/qrcode.php?url=http://yoursite.com/2017/05/28/react001/" alt="微信分享二维码">
+      <img src="http://s.jiathis.com/qrcode.php?url=http://yoursite.com/2017/07/10/fourth/" alt="微信分享二维码">
     </div>
 </div>
 
@@ -303,18 +421,9 @@ react是一个构建用户界面的javascript库，React 使用 JSX 来替代常
   
 <nav id="article-nav">
   
-    <a href="/2017/07/10/fourth/" id="article-nav-newer" class="article-nav-link-wrap">
-      <i class="icon-circle-left"></i>
-      <div class="article-nav-title">
-        
-          防抖和节流
-        
-      </div>
-    </a>
   
-  
-    <a href="/2017/05/28/third/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">this解释</div>
+    <a href="/2017/05/28/react001/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">react笔记001</div>
       <i class="icon-circle-right"></i>
     </a>
   

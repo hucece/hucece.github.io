@@ -139,6 +139,78 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-first" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/04/01/first/">jsGrid样式自定义</a>
+    </h1>
+  
+
+        
+        <a href="/2017/04/01/first/" class="archive-article-date">
+  	<time datetime="2017-04-01T07:01:18.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-04-01</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>开始用自己搭建的博客写文章，开森。。。</p>
+<p>之所以写这篇博客，并不是我所介绍的内容很新颖独特，而是当我在网上搜寻解决这些问题的办法时，很少搜到给我明确方向的答案，所以，在搜寻答案失败之后，我还是打算自己来解决，一方面，如果有人遇到和我一样的问题而没有搜到答案，还有一方面，给我自己做一个笔记。不喜勿喷哦。。。</p>
+<p>在我的项目中，采用了jqGrid这个表格插件，官方demos中的样式表采用的是jquery-ui的样式表来美化这个表格,由于用久了bootstrap，比较喜欢它简洁大方的气质，所以我选择用bootstrap来美化，但是效果不尽人意（样式冲突），所以，需要在调试中找出这些样式，然后，重新定义这些样式来达到我们的效果。</p>
+<h3 id="效果"><a href="#效果" class="headerlink" title="效果"></a>效果</h3><p><img src="/2017/04/01/first/jqgrid1.jpg" alt="img"></p>
+<h3 id="引入的文件："><a href="#引入的文件：" class="headerlink" title="引入的文件："></a>引入的文件：</h3><p><img src="/2017/04/01/first/jqgrid3.png" alt="img"></p>
+<p><img src="/2017/04/01/first/jqgrid4.png" alt="img"></p>
+<h3 id="样式表"><a href="#样式表" class="headerlink" title="样式表"></a>样式表</h3><p>这个例子中和原来的风格完全不一样。这张图片的每一个不同颜色的框都是一个表格。当然外面被div套着。在我们没有写自定义的样式表时，我们打开谷歌的调试，看样式，根据他的样式class来写自己自定义的样式表。<br><img src="/2017/04/01/first/jqgrid6.png" alt="img"><br>比如：他的样式为.ui_state_hover{ color:#f8f8f8; },我们可以改成.ui_state_hover{color:#999;}这个样式表一定要放在ui.grid.css，bootstrap.css的后面来进行覆盖，如果覆盖不了，我们就进行权重比较。</p>
+<h3 id="图标"><a href="#图标" class="headerlink" title="图标"></a>图标</h3><p>说完了样式表，接下来说说图标。Jqgrid本身是不带图标的，一般是用别的例如jquery-ui来进行图标的替换。Bootstrap中也有图标。这里图标就成了一个问题了。就算是我们看到网页加载完后有图标的class，但是都没有图形，我们需要在表格动态加载完成之后，将图标的class换成bootstrap的图形icon，所以在gridComplete事件中来干这件事情。<br>当然这里的图标的id也是不同的版本jqgrid有可能有所不同，所以还得再谷歌的调试工具中来看。</p>
+<p><img src="/2017/04/01/first/jqgrid5.png" alt="img"></p>
+<p>###PS<br>关于版本（主要是jqGrid.js，ui.grid.css）：<br>    如果jqGrid.js和ui.grid.css的版本有所变化，那么那个tablestyle.css文件和index.js文件就得重新写，需要重新写的地方就是最后两张图所展示的部分。所以一般确定好这两个文件的版本，不可轻易变换。</p>
+<h3 id="后记"><a href="#后记" class="headerlink" title="后记"></a>后记</h3><p>我的代码可能不是适合你，主要在于思路和方法，自己动手，丰衣足食。</p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">jsGrid bootstrap table</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2017/04/01/first/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+
+
+
+
+
+
+
+  
     <article id="post-hello-world" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     

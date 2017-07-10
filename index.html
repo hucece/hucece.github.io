@@ -139,6 +139,239 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-fourth" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/07/10/fourth/">防抖和节流</a>
+    </h1>
+  
+
+        
+        <a href="/2017/07/10/fourth/" class="archive-article-date">
+  	<time datetime="2017-07-10T00:57:47.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-07-10</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="导语"><a href="#导语" class="headerlink" title="导语"></a>导语</h3><blockquote>
+<p>最近在项目中，websocket每过50毫秒就会给给我推一个数据，我需要做的是将数据映射在一个实时变化的折线图（highChart），而我们对这个折线图的需求不过是想看到大致的速度和高度的变化趋势，所以说不必要每个数据都放在我们highChart的折线图上，只要 每间隔30秒添加数据到折线图，我首先想到了的是使用setTimeout，后来在一个后台同事的提醒下做节流/防抖，于是百度，谷歌，然后研究了一番，最后做出了效果，以下是我的总结。  </p>
+</blockquote>
+<h2 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h2><p><strong>节流：</strong>    强调是在一定时间内，调用函数的最大次数，比如在100毫秒内最多调用函数一次保证的是x毫秒恒定的执行次数。<br><strong>防抖：</strong>    强调的是事件频繁触发一定时间后才执行，或者第一次触发事件的时候就执行，直到停止触发后等待一段时间才执行。 保证的是把触发非常频繁的时间合并成一次执行。<br><img src="/2017/07/10/fourth/pic1.png" alt="img"><br>(图片引自User Interfaces | Meteor Guide)（<a href="https://guide.meteor.com/ui-ux.html）" target="_blank" rel="external">https://guide.meteor.com/ui-ux.html）</a></p>
+<p>在我的项目中数据是不断的进行推送的，直到这个发送数据的那个某某机器掉线，所以最终采用的是节流。在网上有很多关于节流和防抖的一些代码，大部分人用的是loadsh或者underscore的中的debounce、throttle源码，根据源码我们来看下节流和防抖的区别，并且将这个代码运用在我的项目中。</p>
+<h2 id="防抖"><a href="#防抖" class="headerlink" title="防抖"></a>防抖</h2><p>先来一个我在网上看到并且进行改造的简化版的防抖。</p>
+<pre><code>&lt;div id=&quot;container&quot; style=&quot;width:120px;height:120px;border: 1px solid #ccc;&quot;&gt;&lt;/div&gt;
+
+&lt;script&gt;
+window.onload = function(){
+    /*
+    *@parm func ： {function} ，需要触发执行的回调函数
+    *@parm delay: {num} ,时间间隔，单位为毫秒
+    */
+    function debouce(func,delay){
+        //定时器
+        var timer = null;
+        return function(){
+            var context = this;   //执行上下文环境，因为在setTimeout中的回调函数中this = window
+            var args = arguments;   //参数
+            clearTimeout(timer);   //清除上次定义的定时器
+            timer = setTimeout(function(){   //重现赋值定时器
+                func.apply(context,args);   //执行需要出发的函数
+            },delay)
+        }
+    }
+    function consoleSomething(){
+        console.log(&quot;防抖防抖&quot;)
+    }
+    document.getElementById(&quot;container&quot;).onmousemove = debouce(consoleSomething,3000);
+}
+&lt;/script&gt;
+</code></pre><p>节流函数debouce产生了一个闭包（最后return），我们知道闭包可以使得函数有权访问另一个函数作用域内变量，这个定义的timer可以被返回的函数func不断访问，而且不存在于全局中，防止全局污染。每次我们把鼠标放在container区域不出来就会触发onmousemove的回调函数func，func把之前的定时器清除掉，然后重新对定时器进行赋值，这样下去，除非我们把鼠标移出，最后一个定时器不会被清除，在delay后执行consoleSomething这个回调函数。<br>从这个简化版的例子中，我们应该对防抖的概念有比较清晰的印象了。    </p>
+<pre><code>&lt;button id=&quot;button&quot;&gt;click me&lt;/button&gt;
+
+&lt;script type=&quot;text/javascript&quot;&gt;
+    //获取时间戳
+    var _now = Date.now || function(){
+        return new Date().getTime();
+    }
+    /*
+    *@params func:{function},触发执行的回调函数
+    *@params wait:{num} ,时间间隔，单位为毫秒
+    *@params immediate:{boolea},true表示在停止触发后的一段时间间隔后执行回调，false:表示第一次触发就执行
+    */
+    var debouce = function(func,wait,immediate){
+        //定时器，传入的参数，执行上下文环境，触发回调函数的时间戳
+        var timeout,args,context,timestamp,result;
+        var later = function(){
+            var last = _now() -  timestamp;   //打算执行回调函数是间戳-触发回调函数的时间戳
+            if(last&lt;wait &amp;&amp; last&gt;0){  //时间差小于时间间隔，并且时间差大于0
+                timeout = setTimeout(later,wait-last); //timeout重新复制，并不执行回调函数
+            }else{
+                timeout = null; 
+                if(!immediate){   //如果不是立即执行
+                    result = func.apply(context,args); //执行回调函数
+                    if(!timeout){   
+                        context = args = null;
+                    }
+                }
+            }
+        }
+        return function(){
+            context = this;  //上下文执行环境
+            args = arguments;  //传入的参数
+            timestamp = _now();   //触发回调的时间戳
+            //传入的参数immediate为true,并且定时器为空,callNow为true,立即执行
+            var callNow = immediate &amp;&amp; !timeout;   
+
+            //timeout没有赋值定时器，赋值定时器
+            if(!timeout){  
+                timeout = setTimeout(later,wait);
+            }
+            //如果立即执行
+            if(callNow){ 
+                result = func.apply(context,args);  //触发后立即执行回调函数
+                context = args = null;
+            }
+        }
+    }
+    var consoleSomething = function(){
+        console.log(&quot;防抖防抖防抖&quot;);
+    }
+    window.onload = function(){
+        document.getElementById(&quot;button&quot;).onclick = debouce(consoleSomething,1000,true);
+    }
+
+&lt;/script&gt;
+</code></pre><p>同样也是使用的闭包机制，而不同的是还可以选择是否事件频繁触发一定时间后才执行，或者第一次触发事件的时候就执行，直到停止触发后等待一段时间才执行。<br>其中，这个核心点在于：</p>
+<ul>
+<li>定时器（timeout)是否为空，如果为空，就重新赋值定时器，如果不为空，则不再赋值定时器，这样避免频繁触发频繁添加不必要的定时器（timeout）。</li>
+<li>触发时刻的时间戳(timestamp)在不断改变，规定的时间间隔(wait)固定的，只要到了定时器该执行(_now)的时候，如果说该执行时刻的时间戳(_now)和最近触发时刻的时间戳(timestamp)的间隔小于规定的额时间间隔(wait)或者小于0，那么说明在规定的时间间隔(wait)内还在不停的触发，所以，更新定时器(timeout)，时间间隔为这这两者的差值(timestamp-_now)</li>
+<li>在立即执行回调函数这一块，如果定时器为空，并且是立即执行的指令，则立即执行回调函数，但是，还是要给timeout赋值定时器，但是这并不意味着这个定时器就会执行这个函数，因为他会判断是否是立即执行状态，如果是就不会执行这个函数。而且这个定时器存在的意义如第一条所说。</li>
+</ul>
+<h2 id="节流"><a href="#节流" class="headerlink" title="节流"></a>节流</h2><p>先来一个我在网上看到并且进行改造的简化版的节流。 </p>
+<pre><code>&lt;div id=&quot;throttle&quot; style=&quot;width: 290px;height:300px;border: 1px solid #ccc;&quot;&gt;&lt;/div&gt;
+&lt;script type=&quot;text/javascript&quot;&gt;
+    /*
+    *@param: func:{function},触发执行的回调函数
+    *@param: delay:{num},执行的时间间隔
+    */
+    var throttle = function (func,delay) {
+        var isRun = true;   //控制是否添加回调函数，
+        return function(){
+            if(!isRun) return false;   //isRun为false,表示不能添加新的回调函数
+            isRun = false;  
+            var args = arguments;
+            var context = this
+            setTimeout(function(){
+                func.apply(context,args);
+                isRun = true;  //在这个回调函数执行后，isRun为true，才能添加新的回调函数
+            },delay)
+        }
+    }
+    var consoleSomething = function(){
+        console.log(&quot;节流节流节流&quot;);
+    }
+    document.getElementById(&quot;throttle&quot;).onclick = throttle(consoleSomething,3000)
+&lt;/script&gt;
+</code></pre><p>这个例子也是采用的闭包机制，核心点在于是否可以添加回调函数，如果说上一个回调函数在时间间隔delay内还没有执行，那么就不能添加回调函数，始终都只有一个回调函数。当时间间隔后执行了回调函数,将isRun设为true,才能添加下一个回调函数，所以在时间间隔内不断触发的是不会产生新的回调函数，除非已经产生的回调函数已经执行了。<br>从这个简化版的例子中，我们应该对节流的概念有比较清晰的印象了。   </p>
+<pre><code>&lt;button id=&quot;button&quot;&gt;click me&lt;/button&gt;
+&lt;script type=&quot;text/javascript&quot;&gt;
+    var _now = Date.now || function(){
+        return new Date().getTime();
+    }
+    /*
+    *@param func : {function} 触发执行的回调函数
+    *@param wait : {num} 时间间隔
+    *@param option : {} 如果想忽略开始边界上的调用，传入{leading:false}
+    *                    如果想忽略结尾边界上的调用，传入{trailing:false}
+    */
+    var _throttle = function(func, wait, options) {
+        //执行上下文环境，闭包传入的参数
+          var context, args, result;
+          var timeout = null;
+         var previous = 0;   //上次执行回调函数的时间点
+          if (!options) options = {};
+          //延迟执行函数
+          var later = function() {
+              // 若设定了开始边界不执行选项，上次执行时间始终为0
+            previous = options.leading === false ? 0 : _now();
+            timeout = null;
+            result = func.apply(context, args);
+               if (!timeout) context = args = null;
+          };
+          //leading:false,这第一次调用不执行function
+          //trailing:false,禁止最后那一次延迟的调用
+          return function() {
+            var now = _now();   //触发动作的时间戳
+            //首次执行时，如果设定了开始便不执行回调函数，将上次的执行回调函数的时间戳设置为此次触发的时间戳
+            if (!previous &amp;&amp; options.leading === false) previous = now;
+            //执行回调函数的剩余时间间隔，总的时间间隔-（这次触发的时间戳-上次执行的时间间隔）
+            var remaining = wait - (now - previous);
+            context = this;
+            args = arguments;
+            //执行回调函数剩余的时间间隔小于0，表示上次执行到现在已经超过了规定的时间间隔；
+            //执行回调函数剩余的时间间隔大于规定的时间间隔表示客户端系统时间呗重新调整过
+            if (remaining &lt;= 0 || remaining &gt; wait) {
+                  if (timeout) {
+                    clearTimeout(timeout);
+                    timeout = null;
+                  }
+                  previous = now;
+                  result = func.apply(context, args);
+                  if (!timeout) context = args = null;
+                   //如果延迟执行不存在，且没有设定结尾边界不执行选项
+            } else if (!timeout &amp;&amp; options.trailing !== false) {
+              timeout = setTimeout(later, remaining);
+            }
+               return result;
+          };
+    };
+    var consoleSomething = function(){console.log(&quot;节流节流&quot;)}
+    window.onload = function(){
+        document.getElementById(&quot;button&quot;).onclick = _throttle(consoleSomething,3000,{})
+    }
+&lt;/script&gt;
+</code></pre><p>其中，这个核心点在于： </p>
+<ul>
+<li>以第一次触发事件执行回调函数的时间戳为几点，然后每隔wait时间执行一次回调函数，不管用户触发了多少次时间，用户停止点击后，每隔一次触发一次后清掉定时器 </li>
+<li>剩余的时间间隔remaining为规定的时间间隔(wait)减去现在触发的时间戳（now)和上次执行回调函数的时间戳（previous)的差值，剩余的时间间隔（remaining)表明是否到了该执行此次触发的时候，如果到了，则清除之前的定时器，执行现在这个回调函数否则，如果定时器不存在则重新赋值定时器。</li>
+<li>定时器（timeout）给埋下了一个时间段，表明这个时间段中，用户的触发时没有用的。</li>
+</ul>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2017/07/10/fourth/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+
+
+
+
+
+
+
+  
     <article id="post-react001" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -417,78 +650,6 @@ student.like();
       
         <p class="article-more-link">
           <a class="article-more-a" href="/2017/04/18/second/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-
-
-
-
-
-
-
-  
-    <article id="post-first" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/04/01/first/">jsGrid样式自定义</a>
-    </h1>
-  
-
-        
-        <a href="/2017/04/01/first/" class="archive-article-date">
-  	<time datetime="2017-04-01T07:01:18.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-04-01</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>开始用自己搭建的博客写文章，开森。。。</p>
-<p>之所以写这篇博客，并不是我所介绍的内容很新颖独特，而是当我在网上搜寻解决这些问题的办法时，很少搜到给我明确方向的答案，所以，在搜寻答案失败之后，我还是打算自己来解决，一方面，如果有人遇到和我一样的问题而没有搜到答案，还有一方面，给我自己做一个笔记。不喜勿喷哦。。。</p>
-<p>在我的项目中，采用了jqGrid这个表格插件，官方demos中的样式表采用的是jquery-ui的样式表来美化这个表格,由于用久了bootstrap，比较喜欢它简洁大方的气质，所以我选择用bootstrap来美化，但是效果不尽人意（样式冲突），所以，需要在调试中找出这些样式，然后，重新定义这些样式来达到我们的效果。</p>
-<h3 id="效果"><a href="#效果" class="headerlink" title="效果"></a>效果</h3><p><img src="/2017/04/01/first/jqgrid1.jpg" alt="img"></p>
-<h3 id="引入的文件："><a href="#引入的文件：" class="headerlink" title="引入的文件："></a>引入的文件：</h3><p><img src="/2017/04/01/first/jqgrid3.png" alt="img"></p>
-<p><img src="/2017/04/01/first/jqgrid4.png" alt="img"></p>
-<h3 id="样式表"><a href="#样式表" class="headerlink" title="样式表"></a>样式表</h3><p>这个例子中和原来的风格完全不一样。这张图片的每一个不同颜色的框都是一个表格。当然外面被div套着。在我们没有写自定义的样式表时，我们打开谷歌的调试，看样式，根据他的样式class来写自己自定义的样式表。<br><img src="/2017/04/01/first/jqgrid6.png" alt="img"><br>比如：他的样式为.ui_state_hover{ color:#f8f8f8; },我们可以改成.ui_state_hover{color:#999;}这个样式表一定要放在ui.grid.css，bootstrap.css的后面来进行覆盖，如果覆盖不了，我们就进行权重比较。</p>
-<h3 id="图标"><a href="#图标" class="headerlink" title="图标"></a>图标</h3><p>说完了样式表，接下来说说图标。Jqgrid本身是不带图标的，一般是用别的例如jquery-ui来进行图标的替换。Bootstrap中也有图标。这里图标就成了一个问题了。就算是我们看到网页加载完后有图标的class，但是都没有图形，我们需要在表格动态加载完成之后，将图标的class换成bootstrap的图形icon，所以在gridComplete事件中来干这件事情。<br>当然这里的图标的id也是不同的版本jqgrid有可能有所不同，所以还得再谷歌的调试工具中来看。</p>
-<p><img src="/2017/04/01/first/jqgrid5.png" alt="img"></p>
-<p>###PS<br>关于版本（主要是jqGrid.js，ui.grid.css）：<br>    如果jqGrid.js和ui.grid.css的版本有所变化，那么那个tablestyle.css文件和index.js文件就得重新写，需要重新写的地方就是最后两张图所展示的部分。所以一般确定好这两个文件的版本，不可轻易变换。</p>
-<h3 id="后记"><a href="#后记" class="headerlink" title="后记"></a>后记</h3><p>我的代码可能不是适合你，主要在于思路和方法，自己动手，丰衣足食。</p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">jsGrid bootstrap table</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2017/04/01/first/">展开全文 >></a>
         </p>
       
 
